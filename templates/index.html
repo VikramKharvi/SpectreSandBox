@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Spectre SandBox</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<style>
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   padding: 10px;
+   height: 50px;
+   background-color: #2E2E2E;
+   color: white;
+   text-align: center;
+}
+</style>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+      <a class="nav-link" href="/">Spectre</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/">SandBox</a>
+    </li>
+  </ul>
+<form method="POST" action="{{ url_for('logs')}}">
+<button type="submit" class="btn btn-success" name="log" value='true'>Logs</button>
+</form>
+</nav>
+
+<div class="jumbotron text-center">
+  <h1>Welcome to Spectre Sandbox</h1>
+  <h5>Spectre will execute malware and start logging it's activities in real time</h5> 
+</div>
+  
+<div class="container">
+<div class="card">
+  <div class="card-header">
+    Details
+  </div>
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <form method="POST" action="{{ url_for('begin')}}">
+        <div class="form-group">
+          <label>Set the path of your malware executable</label>
+          <input type="text" class="form-control" name="path" id="path" placeholder="For example: C:\Users\user\Desktop\Infected.exe">
+        </div>
+        <button type="submit" class="btn btn-success" name="btn" value="1" onclick="checkX()">Start</button>
+        <button type="submit" class="btn btn-danger" name="btn" value="0">Stop</button>
+      </form>
+      <div style="margin-top:10px;">
+      <form method="POST" action="{{ url_for('analysis')}}">
+      <button type="submit" class="btn btn-info" name="log" value='true' style="width: 125px;">Analyse</button>
+      </form>
+      <div>
+    </blockquote>
+  </div>
+</div>
+
+
+
+<script>
+function checkX() {
+  document.getElementById("path").required = true;
+}
+</script>
+
+
+<div class="footer">
+  Made by Vikram Kharvi. Spectre - 0.1v
+</div>
+
+
+</body>
+</html>

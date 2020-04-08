@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Spectre SandBox</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<style>
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   padding: 10px;
+   height: 50px;
+   background-color: #2E2E2E;
+   color: white;
+   text-align: center;
+}
+</style>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+      <a class="nav-link" href="/">Spectre</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/">SandBox</a>
+    </li>
+  </ul>
+  <form method="POST" action="{{ url_for('logs')}}">
+  <button type="submit" class="btn btn-success" name="log" value='true'>Logs</button>
+  <form>
+</nav>
+
+
+<div class="jumbotron text-center">
+  <h1>Spectre Sandbox Logs</h1>
+</div>
+
+<div class="container">
+<div class="model mb-4" >
+<div class="modal-content">
+{% if data!='' %}
+{% for x in data %}
+{% if x!='' %}
+<div class="modal-body">
+{{x}}
+</div>
+{% endif %}
+{% endfor %}
+{% else %}
+<div class="alert alert-danger" role="alert">
+  No data found
+</div>
+{% endif %}
+</div>
+</div>
+</div>
+
+<div class="footer">
+  Made by Vikram Kharvi. Spectre - 0.1v
+</div>
+
+</body>
+</html>

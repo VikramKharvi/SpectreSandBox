@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>SandBox</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+      <a class="nav-link" href="/">SandBox</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/">Disabled</a>
+    </li>
+  </ul>
+  <form method="POST" action="{{ url_for('logs')}}">
+  <button type="submit" class="btn btn-success" name="log" value='true'>Logs</button>
+  </form>
+</nav>
+<style>
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: grey; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background:#A9A9A9; 
+}
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   padding: 10px;
+   height: 50px;
+   background-color: #2E2E2E;
+   color: white;
+   text-align: center;
+}
+
+</style>
+
+<div class="jumbotron text-center">
+  <h1>Sandbox Analysis</h1>
+  <div class="card center">
+    <h5 class="card-header">Filters</h5>
+  <div class="card-body">
+  <div class="container-fluid row" style="margin-left: 20%;">
+    <div class="column m-2">
+    <button class="btn btn-dark" style="width:200px;" onclick="processSort()">Process</button>
+    </div>
+    <div class="column m-2">
+    <button class="btn btn-dark" style="width:200px;" onclick="fileSort()">File</button>
+    </div>
+    <div class="column m-2">
+    <button class="btn btn-dark" style="width:200px;" onclick="registrySort()">Network</button>
+    </div>
+    <div class="column m-2">
+    <button class="btn btn-dark" style="width:200px;" onclick="networkSort()">Registry</button>
+    </div>
+    <div class="column m-2">
+    <button class="btn btn-dark" style="width:200px;">Clear</button>
+    </div>
+  </div>
+  </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+<div class="table-responsive">
+  <table class="table table-dark table-hover" id="Table">
+    <thead>
+      <tr style="text-align: center;">
+        <th>Time</th>
+        <th>Process Name</th>
+        <th>PID</th>
+        <th>Operation</th>
+        <th>Path</th>
+        <th>Result</th>
+        <th>Details</th>
+        <th>Thread Identifier</th>
+        <th>Image Path</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in range(0,data|length) %}
+      <tr>
+      {% for y in data[x] %}
+      <td id="content-3">
+      <div style="text-align: center ;max-width:340px; max-height:100px; overflow:auto;word-wrap: break-word;">
+      {{ y | replace("nan", "Not Applicable")}}
+      <div>
+      </td>
+      {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+
+
+<div class="footer">
+  Made by Vikram Kharvi. Spectre - 0.1v
+</div>
+
+<script>
+function processSort() {
+  var input, filter, table, tr, td, i, txtValue;
+  table = document.getElementById("Table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      console.log(txtValue);
+      if (txtValue.indexOf("Process Create") > -1 || txtValue.indexOf("Process Exit") > -1 || txtValue.indexOf("Process Profiling") > -1|| txtValue.indexOf("Process Start") > -1 ) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+function fileSort() {
+  var input, filter, table, tr, td, i, txtValue;
+  table = document.getElementById("Table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      console.log(txtValue);
+      if (txtValue.indexOf("CloseFile") > -1 || txtValue.indexOf("CreateFile") > -1 || txtValue.indexOf("FileSystemControl") > -1 || txtValue.indexOf("Load Image") > -1 || txtValue.indexOf("ReadFile") > -1 || txtValue.indexOf("WriteFile") > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+function registrySort() {
+  var input, filter, table, tr, td, i, txtValue;
+  table = document.getElementById("Table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      console.log(txtValue);
+      if (txtValue.indexOf("RegCloseKey") > -1 ||txtValue.indexOf("RegCreateKey") > -1 ||txtValue.indexOf("RegDeleteKey") > -1 ||txtValue.indexOf("RegDeleteValue") > -1 ||txtValue.indexOf("RegEnumKey") > -1 ||txtValue.indexOf("RegEnumValue") > -1 ||txtValue.indexOf("RegLoadKey") > -1 ||txtValue.indexOf("RegOpenKey") > -1 ||txtValue.indexOf("RegQueryKey") > -1 ||txtValue.indexOf("RegQueryKeySecurity") > -1 ||txtValue.indexOf("RegQueryMultipleValueKey") > -1 ||txtValue.indexOf("RegQueryValue") > -1 ||txtValue.indexOf("RegSetKeySecurity") > -1 ||txtValue.indexOf("RegSetValue") > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+function networkSort() {
+  var input, filter, table, tr, td, i, txtValue;
+  table = document.getElementById("Table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      console.log(txtValue);
+      if (txtValue.indexOf("TCP Accept") > -1 ||txtValue.indexOf("TCP Connect") > -1 ||txtValue.indexOf("TCP Disconnect") > -1 ||txtValue.indexOf("TCP Receive") > -1 ||txtValue.indexOf("TCP Reconnect") > -1 ||txtValue.indexOf("TCP Retransmit") > -1 ||txtValue.indexOf("TCP Send") > -1 ||txtValue.indexOf("TCP TCPCopy") > -1 ||txtValue.indexOf("UDP Receive") > -1 ||txtValue.indexOf("UDP Send") > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+
+$(function() {
+  /* Inset Dark */
+  $("#content-3").mCustomScrollbar({
+    theme: "inset-3-dark"
+  });
+  });
+</script>
+
+</body>
+</html>
